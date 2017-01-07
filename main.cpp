@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <math.h>
 #include <utility>
+#include <ctime>
 
 // Stream manager structure.
 // Use for reading/writing different data from/to the stream.
@@ -155,11 +156,15 @@ node *reorder(node *root, const int left, const int right) {
 // function build - create new treap.
 // parameter const int size - number of elements in the array.
 // return node* - pointer to the created treap.
-node* build(const int size) {
-    node *root = new node(1);
-    for (int i = 2; i <= size; ++i) {
-        insert(root, new node(i), i - 1);
+node* build(const int size, const int left, const int right) {
+    const int element = (left + right + 1) / 2;
+    if (element > size || element <= 0 || left > right) {
+        return nullptr;
     }
+    node *root = new node(element);
+    root->left = build(size, left, element - 1);
+    root->right = build(size, element + 1, right);
+    update(root);
     return root;
 }
 
@@ -170,24 +175,32 @@ void solve() {
     stream_manager::read_int(std::cin, size);
     stream_manager::read_int(std::cin, queries);
 
-    node *root = build(size);
+    std::clock_t start = std::clock();
+
+    node *root = build(size, 1, size);
 
     for (int i = 0; i < queries; ++i) {
-        int left, right;    
+        int left, right;
         stream_manager::read_int(std::cin, left);
         stream_manager::read_int(std::cin, right);
         root = reorder(root, left, right);
+        //std::cout << "\n";
     }
 
     print(std::cout, root);
+
+
+    //std::clock_t end = std::clock();
+
+    //std::cout << "\n\n" << end - start;
 }
 
 int main() {
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
-    
-    solve();
 
+    solve();
+    
     return 0;
 }
