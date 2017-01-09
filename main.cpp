@@ -1,23 +1,23 @@
 #include "main.h"
 
 void stream_manager::read_int(std::istream &_Istr, int &data) {
-        _Istr >> data;
-    }
+    _Istr >> data;
+}
 
 void stream_manager::read_vector(
-        std::istream &_Istr,
-        std::vector<int> &vector,
-        const int size
-    ) {
-        vector.resize(size);
-        for (int i = 0; i < size; ++i) {
-            _Istr >> vector[i];
-        }
+    std::istream &_Istr,
+    std::vector<int> &vector,
+    const int size
+) {
+    vector.resize(size);
+    for (int i = 0; i < size; ++i) {
+        _Istr >> vector[i];
     }
+}
 
 void stream_manager::write_int(std::ostream &_Ostr, const int data) {
-        _Ostr << data << " ";
-    }
+    _Ostr << data << " ";
+}
 
 
 node::node() {}
