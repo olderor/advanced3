@@ -1,6 +1,8 @@
 #include <iostream>
 #include <istream>
 #include <vector>
+#include <string>
+#include <utility>
 
 // Stream manager structure.
 // Use for reading/writing different data from/to the stream.
@@ -29,6 +31,11 @@ struct stream_manager {
     // Parameter std::ostream &_Istr - address of any output stream.
     // Parameter const int data - integer, the value of which should be written to the stream.
     static void write_int(std::ostream &_Ostr, const int data);
+
+    // Function write_string - procedure for writing an string to the stream.
+    // Parameter std::ostream &_Istr - address of any output stream.
+    // Parameter const string data - string, the value of which should be written to the stream.
+    static void write_string(std::ostream &_Ostr, std::string &data);
 };
 
 // Implicit treap node structure.
@@ -134,6 +141,10 @@ void stream_manager::write_int(std::ostream &_Ostr, const int data) {
     _Ostr << data << " ";
 }
 
+void stream_manager::write_string(std::ostream &_Ostr, std::string &data) {
+    _Ostr << data << "\n";
+}
+
 
 node::node() {}
 node::node(int value) : value(value) {}
@@ -184,14 +195,16 @@ void insert(node *&root, node *item, const int position) {
     merge(before, after, root);
 }
 
-void print(std::ostream &_Ostr, node *root) {
+std::string get_description(node *root) {
+    std::string res = "";
     if (root->left) {
-        print(_Ostr, root->left);
+        res = res + get_description(root->left);
     }
-    stream_manager::write_int(_Ostr, root->value);
+    res = res + std::to_string(root->value) + " ";
     if (root->right) {
-        print(_Ostr, root->right);
+        res = res + get_description(root->right);
     }
+    return res;
 }
 
 node* reorder(node *root, const int left, const int right) {
@@ -221,22 +234,35 @@ node* build(const int size, const int left, const int right) {
     return root;
 }
 
-void solve() {
-    int size, queries;
-
-    stream_manager::read_int(std::cin, size);
-    stream_manager::read_int(std::cin, queries);
-
+std::string solve(
+    const int size,
+    const int queries_count,
+    std::vector<std::pair<int, int>> &queries
+) {
     node *root = build(size, 1, size);
 
-    for (int i = 0; i < queries; ++i) {
-        int left, right;
-        stream_manager::read_int(std::cin, left);
-        stream_manager::read_int(std::cin, right);
-        root = reorder(root, left, right);
+    for (int i = 0; i < queries_count; ++i) {
+        root = reorder(root, queries[i].first, queries[i].second);
     }
 
-    print(std::cout, root);
+    return get_description(root);
+}
+
+void read_data(
+    int &size,
+    int &queries_count,
+    std::vector<std::pair<int, int>> &queries
+) {
+
+    stream_manager::read_int(std::cin, size);
+    stream_manager::read_int(std::cin, queries_count);
+
+    queries.resize(queries_count);
+
+    for (int i = 0; i < queries_count; ++i) {
+        stream_manager::read_int(std::cin, queries[i].first);
+        stream_manager::read_int(std::cin, queries[i].second);
+    }
 }
 
 int main() {
@@ -244,7 +270,14 @@ int main() {
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
 
-    solve();
+    int size, queries_count;
+    std::vector<std::pair<int, int>> queries;
+
+    read_data(size, queries_count, queries);
+
+    std::string answer = solve(size, queries_count, queries);
+
+    stream_manager::write_string(std::cout, answer);
 
     return 0;
 }
