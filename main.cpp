@@ -79,7 +79,7 @@ void print(std::ostream &_Ostr, node *root) {
     }
 }
 
-node *reorder(node *root, const int left, const int right) {
+node* reorder(node *root, const int left, const int right) {
     node *before_left, *after_left;
     split(root, before_left, after_left, left - 1);
 
