@@ -28,12 +28,12 @@ struct stream_manager {
     );
 
     // Function write_int - procedure for writing an integer to the stream.
-    // Parameter std::ostream &_Istr - address of any output stream.
+    // Parameter std::ostream &_Ostr - address of any output stream.
     // Parameter const int data - integer, the value of which should be written to the stream.
     static void write_int(std::ostream &_Ostr, const int data);
 
     // Function write_string - procedure for writing an string to the stream.
-    // Parameter std::ostream &_Istr - address of any output stream.
+    // Parameter std::ostream &_Ostr - address of any output stream.
     // Parameter const string data - string, the value of which should be written to the stream.
     static void write_string(std::ostream &_Ostr, std::string &data);
 };
