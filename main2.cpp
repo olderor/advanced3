@@ -94,7 +94,7 @@ void print(std::ostream &_Ostr, node *root);
 // Parameter const int left - left position in the array.
 // Parameter const int right - right position in the array.
 // Return node* - pointer to the result of moving.
-node *reorder(node *root, const int left, const int right);
+node* reorder(node *root, const int left, const int right);
 
 // Function build - create new treap.
 // Parameter const int size - number of elements in the array.
@@ -194,7 +194,7 @@ void print(std::ostream &_Ostr, node *root) {
     }
 }
 
-node *reorder(node *root, const int left, const int right) {
+node* reorder(node *root, const int left, const int right) {
     node *before_left, *after_left;
     split(root, before_left, after_left, left - 1);
 
