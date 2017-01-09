@@ -1,8 +1,9 @@
 #pragma once
-
 #include <iostream>
 #include <istream>
 #include <vector>
+#include <string>
+#include <utility>
 
 // Stream manager structure.
 // Use for reading/writing different data from/to the stream.
@@ -28,9 +29,14 @@ struct stream_manager {
     );
 
     // Function write_int - procedure for writing an integer to the stream.
-    // Parameter std::ostream &_Istr - address of any output stream.
+    // Parameter std::ostream &_Ostr - address of any output stream.
     // Parameter const int data - integer, the value of which should be written to the stream.
     static void write_int(std::ostream &_Ostr, const int data);
+
+    // Function write_string - procedure for writing an string to the stream.
+    // Parameter std::ostream &_Ostr - address of any output stream.
+    // Parameter const string data - string, the value of which should be written to the stream.
+    static void write_string(std::ostream &_Ostr, std::string &data);
 };
 
 // Implicit treap node structure.
@@ -86,10 +92,10 @@ void split(node *root, node *&left, node *&right, const int position);
 // Parameter const int position - position in the array.
 void insert(node *&root, node *item, const int position);
 
-// Function print - print array.
-// Parameter std::ostream &_Istr - address of any output stream.
+// Function get_description - get description of the node - print array.
 // Parameter node *root - treap to print.
-void print(std::ostream &_Ostr, node *root);
+// Return std::string - description of the array.
+std::string get_description(node *root);
 
 // Function reorder - move subsegment to the start of the array.
 // Parameter node *root - pointer to the treap.
@@ -106,7 +112,28 @@ node* reorder(node *root, const int left, const int right);
 node* build(const int size, const int left, const int right);
 
 // Function solve - solve given problem.
-void solve();
+// Parameter const int size - number of elements in the array.
+// Parameter const int queries_count - number of queries.
+// Parameter std::vector<std::pair<int, int>> &queries - list of queries,
+// that contains left and right indexes of each query.
+// Return std::string - answer to the problem.
+std::string solve(
+    const int size,
+    const int queries_count,
+    std::vector<std::pair<int, int>> &queries
+);
+
+// Function read_data - process input.
+// Parameter const int size - number of elements in the array.
+// Parameter const int queries_count - number of queries.
+// Parameter std::vector<std::pair<int, int>> &queries - list of queries,
+// that contains left and right indexes of each query.
+void read_data(
+    int &size,
+    int &queries_count,
+    std::vector<std::pair<int, int>> &queries
+);
 
 // Main function.
 int main();
+
