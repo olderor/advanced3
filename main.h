@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <istream>
 #include <vector>
@@ -39,77 +40,95 @@ struct stream_manager {
     static void write_string(std::ostream &_Ostr, std::string &data);
 };
 
-// Implicit treap node structure.
-struct node {
 
-    // Field size - number of childs in the node.
-    int size;
+struct treap {
+public:
+    // Initialization- create new treap.
+    // Parameter const int size - number of elements in the array.
+    explicit treap(const int size);
 
-    // Field value - value that the node stores.
-    int value;
+    // Function get_description - get description of the treap - print array.
+    // Return std::string - description of the array.
+    std::string get_description();
 
-    // Pointer to the left child.
-    node *left = nullptr;
+    // Function reorder - move subsegment to the start of the array.
+    // Parameter const int left - left position in the array.
+    // Parameter const int right - right position in the array.
+    void reorder(const int left, const int right);
 
-    // Pointer to the right child.
-    node *right = nullptr;
+private:
+    // Implicit treap node structure.
+    struct node {
+        // Field size - number of childs in the node.
+        int size;
 
-    // Initialization.
-    node();
+        // Field value - value that the node stores.
+        int value;
 
-    // Initialization with given value.
-    explicit node(int value);
+        // Pointer to the left child.
+        node *left = nullptr;
+
+        // Pointer to the right child.
+        node *right = nullptr;
+
+        // Initialization.
+        node();
+
+        // Initialization with given value.
+        explicit node(int value);
+    };
+
+    node *root = nullptr;
+
+    // Function build - create new treap.
+    // Parameter const int size - number of elements in the array.
+    // Parameter const int left - left bulding border.
+    // Parameter const int right - right bulding border.
+    // Return node* - pointer to the created treap.
+    node* build(const int size, const int left, const int right);
+
+    // Function update - update size of the node.
+    // Parameter node *root - pointer to the node that must be updated.
+    void update(node *root);
+
+
+    // Function size - find number of childs in the node.
+    // Returns size of the node (if node is not exist, returns 0).
+    int size(node *root);
+
+    // Function merge - merge two treaps into new one.
+    // Parameter node *left - pointer to the first treap.
+    // Parameter node *right - pointer to the second treap.
+    // Parameter node *&result - node where should be stored the result of the merging.
+    void merge(node *left, node *right, node *&result);
+
+
+    // Function split - split treap into two treaps by position in the array.
+    // Parameter node *root - pointer to the treap that should be split.
+    // Parameter node *&left - node where should be stored the first treap.
+    // Parameter node *&right - node where should be stored the second treap.
+    // Parameter const int position - position in the array.
+    void split(node *root, node *&left, node *&right, const int position);
+
+    // Function insert - insert new element into array by its position.
+    // Parameter node *&root - pointer to the treap,
+    // where should be stored the result of inserting.
+    // Parameter node *item - node to insert.
+    // Parameter const int position - position in the array.
+    void insert(node *&root, node *item, const int position);
+
+    // Function get_description - get description of the node - print array.
+    // Parameter node *root - treap to print.
+    // Return std::string - description of the array.
+    std::string get_description(node *root);
+
+    // Function reorder - move subsegment to the start of the array.
+    // Parameter node *root - pointer to the treap.
+    // Parameter const int left - left position in the array.
+    // Parameter const int right - right position in the array.
+    // Return node* - pointer to the result of moving.
+    node* reorder(node *root, const int left, const int right);
 };
-
-// Function size - find number of childs in the node.
-// Returns size of the node (if node is not exist, returns 0).
-int size(node *root);
-
-
-// Function update - update size of the node.
-// Parameter node *root - pointer to the node that must be updated.
-void update(node *root);
-
-
-// Function merge - merge two treaps into new one.
-// Parameter node *left - pointer to the first treap.
-// Parameter node *right - pointer to the second treap.
-// Parameter node *&result - node where should be stored the result of the merging.
-void merge(node *left, node *right, node *&result);
-
-
-// Function split - split treap into two treaps by position in the array.
-// Parameter node *root - pointer to the treap that should be split.
-// Parameter node *&left - node where should be stored the first treap.
-// Parameter node *&right - node where should be stored the second treap.
-// Parameter const int position - position in the array.
-void split(node *root, node *&left, node *&right, const int position);
-
-// Function insert - insert new element into array by its position.
-// Parameter node *&root - pointer to the treap,
-// where should be stored the result of inserting.
-// Parameter node *item - node to insert.
-// Parameter const int position - position in the array.
-void insert(node *&root, node *item, const int position);
-
-// Function get_description - get description of the node - print array.
-// Parameter node *root - treap to print.
-// Return std::string - description of the array.
-std::string get_description(node *root);
-
-// Function reorder - move subsegment to the start of the array.
-// Parameter node *root - pointer to the treap.
-// Parameter const int left - left position in the array.
-// Parameter const int right - right position in the array.
-// Return node* - pointer to the result of moving.
-node* reorder(node *root, const int left, const int right);
-
-// Function build - create new treap.
-// Parameter const int size - number of elements in the array.
-// Parameter const int left - left bulding border.
-// Parameter const int right - right bulding border.
-// Return node* - pointer to the created treap.
-node* build(const int size, const int left, const int right);
 
 // Function solve - solve given problem.
 // Parameter const int size - number of elements in the array.
@@ -136,4 +155,3 @@ void read_data(
 
 // Main function.
 int main();
-
