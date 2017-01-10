@@ -25,21 +25,36 @@ void stream_manager::write_string(std::ostream &_Ostr, std::string &data) {
 }
 
 
-node::node() {}
-node::node(int value) : value(value) {}
 
-int size(node *root) {
+
+
+treap::treap(const int size) {
+    root = build(size, 1, size);
+}
+
+void treap::reorder(const int left, const int right) {
+    root = reorder(root, left, right);
+}
+
+std::string treap::get_description() {
+    return get_description(root);
+}
+
+treap::node::node() {}
+treap::node::node(int value) : value(value) {}
+
+int treap::size(node *root) {
     return root ? root->size : 0;
 }
 
-void update(node *root) {
+void treap::update(node *root) {
     if (!root) {
         return;
     }
     root->size = 1 + size(root->left) + size(root->right);
 }
 
-void merge(node *left, node *right, node *&result) {
+void treap::merge(node *left, node *right, node *&result) {
     if (!left) {
         result = right;
     } else if (!right) {
@@ -54,7 +69,7 @@ void merge(node *left, node *right, node *&result) {
     update(result);
 }
 
-void split(node *root, node *&left, node *&right, const int position) {
+void treap::split(node *root, node *&left, node *&right, const int position) {
     if (!root) {
         left = right = nullptr;
         return;
@@ -67,14 +82,14 @@ void split(node *root, node *&left, node *&right, const int position) {
     update(root);
 }
 
-void insert(node *&root, node *item, const int position) {
+void treap::insert(node *&root, node *item, const int position) {
     node *before, *after;
     split(root, before, after, position);
     merge(before, item, before);
     merge(before, after, root);
 }
 
-std::string get_description(node *root) {
+std::string treap::get_description(node *root) {
     std::string res = "";
     if (root->left) {
         res = res + get_description(root->left);
@@ -86,7 +101,7 @@ std::string get_description(node *root) {
     return res;
 }
 
-node* reorder(node *root, const int left, const int right) {
+treap::node* treap::reorder(node *root, const int left, const int right) {
     node *before_left, *after_left;
     split(root, before_left, after_left, left - 1);
 
@@ -101,7 +116,7 @@ node* reorder(node *root, const int left, const int right) {
     return result;
 }
 
-node* build(const int size, const int left, const int right) {
+treap::node* treap::build(const int size, const int left, const int right) {
     const int element = (left + right + 1) / 2;
     if (element > size || element <= 0 || left > right) {
         return nullptr;
@@ -118,13 +133,13 @@ std::string solve(
     const int queries_count,
     std::vector<std::pair<int, int>> &queries
 ) {
-    node *root = build(size, 1, size);
+    treap *root = new treap(size);
 
     for (int i = 0; i < queries_count; ++i) {
-        root = reorder(root, queries[i].first, queries[i].second);
+        root->reorder(queries[i].first, queries[i].second);
     }
 
-    return get_description(root);
+    return root->get_description();
 }
 
 void read_data(
