@@ -38,77 +38,95 @@ struct stream_manager {
     static void write_string(std::ostream &_Ostr, std::string &data);
 };
 
-// Implicit treap node structure.
-struct node {
 
-    // Field size - number of childs in the node.
-    int size;
+struct treap {
+public:
+    // Initialization- create new treap.
+    // Parameter const int size - number of elements in the array.
+    explicit treap(const int size);
 
-    // Field value - value that the node stores.
-    int value;
+    // Function get_description - get description of the treap - print array.
+    // Return std::string - description of the array.
+    std::string get_description();
 
-    // Pointer to the left child.
-    node *left = nullptr;
+    // Function reorder - move subsegment to the start of the array.
+    // Parameter const int left - left position in the array.
+    // Parameter const int right - right position in the array.
+    void reorder(const int left, const int right);
 
-    // Pointer to the right child.
-    node *right = nullptr;
+private:
+    // Implicit treap node structure.
+    struct node {
+        // Field size - number of childs in the node.
+        int size;
 
-    // Initialization.
-    node();
+        // Field value - value that the node stores.
+        int value;
 
-    // Initialization with given value.
-    explicit node(int value);
+        // Pointer to the left child.
+        node *left = nullptr;
+
+        // Pointer to the right child.
+        node *right = nullptr;
+
+        // Initialization.
+        node();
+
+        // Initialization with given value.
+        explicit node(int value);
+    };
+
+    node *root = nullptr;
+
+    // Function build - create new treap.
+    // Parameter const int size - number of elements in the array.
+    // Parameter const int left - left bulding border.
+    // Parameter const int right - right bulding border.
+    // Return node* - pointer to the created treap.
+    node* build(const int size, const int left, const int right);
+
+    // Function update - update size of the node.
+    // Parameter node *root - pointer to the node that must be updated.
+    void update(node *root);
+
+
+    // Function size - find number of childs in the node.
+    // Returns size of the node (if node is not exist, returns 0).
+    int size(node *root);
+
+    // Function merge - merge two treaps into new one.
+    // Parameter node *left - pointer to the first treap.
+    // Parameter node *right - pointer to the second treap.
+    // Parameter node *&result - node where should be stored the result of the merging.
+    void merge(node *left, node *right, node *&result);
+
+
+    // Function split - split treap into two treaps by position in the array.
+    // Parameter node *root - pointer to the treap that should be split.
+    // Parameter node *&left - node where should be stored the first treap.
+    // Parameter node *&right - node where should be stored the second treap.
+    // Parameter const int position - position in the array.
+    void split(node *root, node *&left, node *&right, const int position);
+
+    // Function insert - insert new element into array by its position.
+    // Parameter node *&root - pointer to the treap,
+    // where should be stored the result of inserting.
+    // Parameter node *item - node to insert.
+    // Parameter const int position - position in the array.
+    void insert(node *&root, node *item, const int position);
+
+    // Function get_description - get description of the node - print array.
+    // Parameter node *root - treap to print.
+    // Return std::string - description of the array.
+    std::string get_description(node *root);
+
+    // Function reorder - move subsegment to the start of the array.
+    // Parameter node *root - pointer to the treap.
+    // Parameter const int left - left position in the array.
+    // Parameter const int right - right position in the array.
+    // Return node* - pointer to the result of moving.
+    node* reorder(node *root, const int left, const int right);
 };
-
-// Function size - find number of childs in the node.
-// Returns size of the node (if node is not exist, returns 0).
-int size(node *root);
-
-
-// Function update - update size of the node.
-// Parameter node *root - pointer to the node that must be updated.
-void update(node *root);
-
-
-// Function merge - merge two treaps into new one.
-// Parameter node *left - pointer to the first treap.
-// Parameter node *right - pointer to the second treap.
-// Parameter node *&result - node where should be stored the result of the merging.
-void merge(node *left, node *right, node *&result);
-
-
-// Function split - split treap into two treaps by position in the array.
-// Parameter node *root - pointer to the treap that should be split.
-// Parameter node *&left - node where should be stored the first treap.
-// Parameter node *&right - node where should be stored the second treap.
-// Parameter const int position - position in the array.
-void split(node *root, node *&left, node *&right, const int position);
-
-// Function insert - insert new element into array by its position.
-// Parameter node *&root - pointer to the treap,
-// where should be stored the result of inserting.
-// Parameter node *item - node to insert.
-// Parameter const int position - position in the array.
-void insert(node *&root, node *item, const int position);
-
-// Function get_description - get description of the node - print array.
-// Parameter node *root - treap to print.
-// Return std::string - description of the array.
-std::string get_description(node *root);
-
-// Function reorder - move subsegment to the start of the array.
-// Parameter node *root - pointer to the treap.
-// Parameter const int left - left position in the array.
-// Parameter const int right - right position in the array.
-// Return node* - pointer to the result of moving.
-node* reorder(node *root, const int left, const int right);
-
-// Function build - create new treap.
-// Parameter const int size - number of elements in the array.
-// Parameter const int left - left bulding border.
-// Parameter const int right - right bulding border.
-// Return node* - pointer to the created treap.
-node* build(const int size, const int left, const int right);
 
 // Function solve - solve given problem.
 // Parameter const int size - number of elements in the array.
@@ -166,21 +184,36 @@ void stream_manager::write_string(std::ostream &_Ostr, std::string &data) {
 }
 
 
-node::node() {}
-node::node(int value) : value(value) {}
 
-int size(node *root) {
+
+
+treap::treap(const int size) {
+    root = build(size, 1, size);
+}
+
+void treap::reorder(const int left, const int right) {
+    root = reorder(root, left, right);
+}
+
+std::string treap::get_description() {
+    return get_description(root);
+}
+
+treap::node::node() {}
+treap::node::node(int value) : value(value) {}
+
+int treap::size(node *root) {
     return root ? root->size : 0;
 }
 
-void update(node *root) {
+void treap::update(node *root) {
     if (!root) {
         return;
     }
     root->size = 1 + size(root->left) + size(root->right);
 }
 
-void merge(node *left, node *right, node *&result) {
+void treap::merge(node *left, node *right, node *&result) {
     if (!left) {
         result = right;
     } else if (!right) {
@@ -195,7 +228,7 @@ void merge(node *left, node *right, node *&result) {
     update(result);
 }
 
-void split(node *root, node *&left, node *&right, const int position) {
+void treap::split(node *root, node *&left, node *&right, const int position) {
     if (!root) {
         left = right = nullptr;
         return;
@@ -208,14 +241,14 @@ void split(node *root, node *&left, node *&right, const int position) {
     update(root);
 }
 
-void insert(node *&root, node *item, const int position) {
+void treap::insert(node *&root, node *item, const int position) {
     node *before, *after;
     split(root, before, after, position);
     merge(before, item, before);
     merge(before, after, root);
 }
 
-std::string get_description(node *root) {
+std::string treap::get_description(node *root) {
     std::string res = "";
     if (root->left) {
         res = res + get_description(root->left);
@@ -227,7 +260,7 @@ std::string get_description(node *root) {
     return res;
 }
 
-node* reorder(node *root, const int left, const int right) {
+treap::node* treap::reorder(node *root, const int left, const int right) {
     node *before_left, *after_left;
     split(root, before_left, after_left, left - 1);
 
@@ -242,7 +275,7 @@ node* reorder(node *root, const int left, const int right) {
     return result;
 }
 
-node* build(const int size, const int left, const int right) {
+treap::node* treap::build(const int size, const int left, const int right) {
     const int element = (left + right + 1) / 2;
     if (element > size || element <= 0 || left > right) {
         return nullptr;
@@ -259,13 +292,13 @@ std::string solve(
     const int queries_count,
     std::vector<std::pair<int, int>> &queries
 ) {
-    node *root = build(size, 1, size);
+    treap *root = new treap(size);
 
     for (int i = 0; i < queries_count; ++i) {
-        root = reorder(root, queries[i].first, queries[i].second);
+        root->reorder(queries[i].first, queries[i].second);
     }
 
-    return get_description(root);
+    return root->get_description();
 }
 
 void read_data(
