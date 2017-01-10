@@ -41,7 +41,7 @@ struct stream_manager {
 
 struct treap {
 public:
-    // Initialization- create new treap.
+    // Initialization - create new treap.
     // Parameter const int size - number of elements in the array.
     explicit treap(const int size);
 
@@ -76,6 +76,7 @@ private:
         explicit node(int value);
     };
 
+    // Pointer to the root element in the tree.
     node *root = nullptr;
 
     // Function build - create new treap.
