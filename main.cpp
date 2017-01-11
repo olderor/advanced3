@@ -118,7 +118,9 @@ void treap::get_elements(node *root, std::vector<int> &elements) {
 
 std::vector<int> treap::get_elements() {
     std::vector<int> result;
-    get_elements(root, result);
+    if (root) {
+        get_elements(root, result);
+    }
     return result;
 }
 
