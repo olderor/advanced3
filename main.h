@@ -43,18 +43,27 @@ struct stream_manager {
 
 struct treap {
 public:
-    // Initialization - create new treap.
+    // Initialization - create new treap with elements from 1 up to size.
     // Parameter const int size - number of elements in the array.
     explicit treap(const int size);
 
-    // Function get_description - get description of the treap - print array.
-    // Return std::string - description of the array.
-    std::string get_description();
+    // Initialization - create new treap.
+    // Parameter std::vector<int> &values - elements in the array.
+    explicit treap(std::vector<int> &values);
 
     // Function reorder - move subsegment to the start of the array.
     // Parameter const int left - left position in the array.
     // Parameter const int right - right position in the array.
     void reorder(const int left, const int right);
+
+    // Function get_elements - retrieve elements from the treap in the correct order.
+    // Return std::vector<int> - list of elements.
+    std::vector<int> get_elements();
+
+    // Function get_description - get description of the treap - print array.
+    // Parameter std::string separator - elements in the treap will be separeted by this string.
+    // Return std::string - description of the array.
+    std::string get_description(std::string separator = " ");
 
 private:
     // Implicit treap node structure.
@@ -82,11 +91,15 @@ private:
     node *root = nullptr;
 
     // Function build - create new treap.
-    // Parameter const int size - number of elements in the array.
     // Parameter const int left - left bulding border.
     // Parameter const int right - right bulding border.
+    // Parameter std::vector<int> &values - elements in the array.
     // Return node* - pointer to the created treap.
-    node* build(const int size, const int left, const int right);
+    node* build(
+        const int left,
+        const int right,
+        std::vector<int> &values
+    );
 
     // Function update - update size of the node.
     // Parameter node *root - pointer to the node that must be updated.
@@ -118,17 +131,22 @@ private:
     // Parameter const int position - position in the array.
     void insert(node *&root, node *item, const int position);
 
-    // Function get_description - get description of the node - print array.
-    // Parameter node *root - treap to print.
-    // Return std::string - description of the array.
-    std::string get_description(node *root);
-
     // Function reorder - move subsegment to the start of the array.
     // Parameter node *root - pointer to the treap.
     // Parameter const int left - left position in the array.
     // Parameter const int right - right position in the array.
     // Return node* - pointer to the result of moving.
     node* reorder(node *root, const int left, const int right);
+
+    // Function get_elements - insert elements from the node to the list.
+    // Parameter node *root - pointer to the treap.
+    // Parameter std::vector<int> &elements - list, where elements should be stored.
+    void get_elements(node *root, std::vector<int> &elements);
+
+    // Function get_description - get description of the node - print array.
+    // Parameter node *root - treap to print.
+    // Return std::string - description of the array.
+    std::string get_description(node *root);
 };
 
 // Function solve - solve given problem.
@@ -156,3 +174,4 @@ void read_data(
 
 // Main function.
 int main();
+
