@@ -27,17 +27,34 @@ void stream_manager::write_string(std::ostream &_Ostr, std::string &data) {
 
 
 
-
 treap::treap(const int size) {
-    root = build(size, 1, size);
+    std::vector<int> values(size);
+    for (int i = 0; i < size; ++i) {
+        values[i] = i + 1;
+    }
+    root = build(1, size, values);
+}
+
+treap::treap(std::vector<int> &values) {
+    root = build(1, values.size(), values);
 }
 
 void treap::reorder(const int left, const int right) {
     root = reorder(root, left, right);
 }
 
-std::string treap::get_description() {
-    return get_description(root);
+std::string treap::get_description(std::string separator) {
+    // return get_description(root);
+
+    std::vector<int> elements = get_elements();
+    if (elements.size() == 0) {
+        return "";
+    }
+    std::string description = std::to_string(elements[0]);
+    for (int i = 1; i < elements.size(); ++i) {
+        description += separator + std::to_string(elements[i]);
+    }
+    return description;
 }
 
 treap::node::node() {}
@@ -89,6 +106,22 @@ void treap::insert(node *&root, node *item, const int position) {
     merge(before, after, root);
 }
 
+void treap::get_elements(node *root, std::vector<int> &elements) {
+    if (root->left) {
+        get_elements(root->left, elements);
+    }
+    elements.push_back(root->value);
+    if (root->right) {
+        get_elements(root->right, elements);
+    }
+}
+
+std::vector<int> treap::get_elements() {
+    std::vector<int> result;
+    get_elements(root, result);
+    return result;
+}
+
 std::string treap::get_description(node *root) {
     std::string res = "";
     if (root->left) {
@@ -116,14 +149,18 @@ treap::node* treap::reorder(node *root, const int left, const int right) {
     return result;
 }
 
-treap::node* treap::build(const int size, const int left, const int right) {
-    const int element = (left + right + 1) / 2;
-    if (element > size || element <= 0 || left > right) {
+treap::node* treap::build(
+    const int left,
+    const int right,
+    std::vector<int> &values
+) {
+    const int index = (left + right + 1) / 2;
+    if (index > values.size() || index <= 0 || left > right) {
         return nullptr;
     }
-    node *root = new node(element);
-    root->left = build(size, left, element - 1);
-    root->right = build(size, element + 1, right);
+    node *root = new node(values[index - 1]);
+    root->left = build(left, index - 1, values);
+    root->right = build(index + 1, right, values);
     update(root);
     return root;
 }
