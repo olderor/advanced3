@@ -167,24 +167,47 @@ treap::node* treap::build(
     return root;
 }
 
+
+
+
+query::query(int left, int right) : left_position(left), right_position(right) {}
+
+
+
+
+
+
+
+std::string get_answer(treap *root) {
+    std::vector<int> elements = root->get_elements();
+    if (elements.size() == 0) {
+        return "";
+    }
+    std::string answer = std::to_string(elements[0]);
+    for (int i = 1; i < elements.size(); ++i) {
+        answer += " " + std::to_string(elements[i]);
+    }
+    return answer;
+}
+
 std::string solve(
     const int size,
     const int queries_count,
-    std::vector<std::pair<int, int>> &queries
+    std::vector<query*> &queries
 ) {
     treap *root = new treap(size);
 
     for (int i = 0; i < queries_count; ++i) {
-        root->reorder(queries[i].first, queries[i].second);
+        root->reorder(queries[i]->left_position, queries[i]->right_position);
     }
 
-    return root->get_description();
+    return get_answer(root);
 }
 
 void read_data(
     int &size,
     int &queries_count,
-    std::vector<std::pair<int, int>> &queries
+    std::vector<query*> &queries
 ) {
 
     stream_manager::read_int(std::cin, size);
@@ -193,8 +216,10 @@ void read_data(
     queries.resize(queries_count);
 
     for (int i = 0; i < queries_count; ++i) {
-        stream_manager::read_int(std::cin, queries[i].first);
-        stream_manager::read_int(std::cin, queries[i].second);
+        int left, right;
+        stream_manager::read_int(std::cin, left);
+        stream_manager::read_int(std::cin, right);
+        queries[i] = new query(left, right);
     }
 }
 
@@ -204,7 +229,7 @@ int main() {
     std::cout.tie(nullptr);
 
     int size, queries_count;
-    std::vector<std::pair<int, int>> queries;
+    std::vector<query*> queries;
 
     read_data(size, queries_count, queries);
 
