@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 #include <istream>
 #include <vector>
@@ -26,8 +25,7 @@ struct stream_manager {
     static void read_vector(
         std::istream &_Istr,
         std::vector<int> &vector,
-        const int size
-    );
+        const int size);
 
     // Function write_int - procedure for writing an integer to the stream.
     // Parameter std::ostream &_Ostr - address of any output stream.
@@ -98,13 +96,11 @@ private:
     node* build(
         const int left,
         const int right,
-        std::vector<int> &values
-    );
+        std::vector<int> &values);
 
     // Function update - update size of the node.
     // Parameter node *root - pointer to the node that must be updated.
     void update(node *root);
-
 
     // Function size - find number of childs in the node.
     // Returns size of the node (if node is not exist, returns 0).
@@ -115,7 +111,6 @@ private:
     // Parameter node *right - pointer to the second treap.
     // Parameter node *&result - node where should be stored the result of the merging.
     void merge(node *left, node *right, node *&result);
-
 
     // Function split - split treap into two treaps by position in the array.
     // Parameter node *root - pointer to the treap that should be split.
@@ -149,7 +144,6 @@ private:
     std::string get_description(node *root);
 };
 
-
 // Struct query.
 // Used for describing the given query with left and right indexes.
 struct query {
@@ -164,7 +158,6 @@ public:
     query(int left, int right);
 };
 
-
 // Function get_answer - get answer to the problem.
 // Parameter treap *root - treap with condition after processing queries.
 // Return std::string - description of the treap - answer to the problem.
@@ -173,25 +166,23 @@ std::string get_answer(treap *root);
 // Function solve - solve given problem.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
-// Parameter std::vector<query*> &queries - list of queries,
+// Parameter std::vector<query> &queries - list of queries,
 // that contains left and right indexes of each query.
 // Return std::string - answer to the problem.
 std::string solve(
     const int size,
     const int queries_count,
-    std::vector<query*> &queries
-);
+    std::vector<query> &queries);
 
 // Function read_data - process input.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
-// Parameter std::vector<query*> &queries - list of queries,
+// Parameter std::vector<query> &queries - list of queries,
 // that contains left and right indexes of each query.
 void read_data(
     int &size,
     int &queries_count,
-    std::vector<query*> &queries
-);
+    std::vector<query> &queries);
 
 // Main function.
 int main();
