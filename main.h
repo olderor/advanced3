@@ -149,29 +149,49 @@ private:
     std::string get_description(node *root);
 };
 
+
+// Struct query.
+// Used for describing the given query with left and right indexes.
+struct query {
+public:
+    // Field int left_position - left index.
+    int left_position;
+
+    // Field int right_position - right index.
+    int right_position;
+
+    // Initialization with given indexes.
+    query(int left, int right);
+};
+
+
+// Function get_answer - get answer to the problem.
+// Parameter treap *root - treap with condition after processing queries.
+// Return std::string - description of the treap - answer to the problem.
+std::string get_answer(treap *root);
+
 // Function solve - solve given problem.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
-// Parameter std::vector<std::pair<int, int>> &queries - list of queries,
+// Parameter std::vector<query*> &queries - list of queries,
 // that contains left and right indexes of each query.
 // Return std::string - answer to the problem.
 std::string solve(
     const int size,
     const int queries_count,
-    std::vector<std::pair<int, int>> &queries
+    std::vector<query*> &queries
 );
 
 // Function read_data - process input.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
-// Parameter std::vector<std::pair<int, int>> &queries - list of queries,
+// Parameter std::vector<query*> &queries - list of queries,
 // that contains left and right indexes of each query.
 void read_data(
     int &size,
     int &queries_count,
-    std::vector<std::pair<int, int>> &queries
+    std::vector<query*> &queries
 );
 
 // Main function.
 int main();
-
