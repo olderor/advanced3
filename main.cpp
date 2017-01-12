@@ -161,6 +161,8 @@ treap::node* treap::build(
     return root;
 }
 
+query::query() : left_position(0), right_position(0) {}
+
 query::query(int left, int right) : left_position(left), right_position(right) {}
 
 std::string get_answer(treap *root) {
@@ -199,10 +201,8 @@ void read_data(
     queries.resize(queries_count);
 
     for (int i = 0; i < queries_count; ++i) {
-        int left, right;
-        stream_manager::read_int(std::cin, left);
-        stream_manager::read_int(std::cin, right);
-        queries[i] = query(left, right);
+        stream_manager::read_int(std::cin, queries[i].left_position);
+        stream_manager::read_int(std::cin, queries[i].right_position);
     }
 }
 
