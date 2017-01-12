@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <istream>
 #include <vector>
@@ -153,6 +154,9 @@ public:
 
     // Field int right_position - right index.
     int right_position;
+
+    // Empty initialization
+    query();
 
     // Initialization with given indexes.
     query(int left, int right);
