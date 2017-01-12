@@ -4,40 +4,6 @@
 #include <string>
 #include <utility>
 
-// Stream manager structure.
-// Use for reading/writing different data from/to the stream.
-// It makes processing input and output easier.
-struct stream_manager {
-
-    // Function read_int - procedure for reading an integer from the stream.
-    // Parameter std::istream &_Istr - address of any input stream.
-    // Parameter int &data - address of the integer, where should be stored input data.
-    static void read_int(std::istream &_Istr, int &data);
-
-    // Function read_vector - procedure for reading an vector of the size from the stream.
-    // Before reading the data, vector is going to be cleaned.
-    // So do not forget, that all the data stored in this vector will be lost.
-    // Parameter std::istream &_Istr - address of any input stream.
-    // Parameter std::vector<int> &vector - vector, where should be stored input data.
-    // Parameter const int size - number of times to read integers from the stream.
-    // Also it is the new size of the vector.
-    static void read_vector(
-        std::istream &_Istr,
-        std::vector<int> &vector,
-        const int size);
-
-    // Function write_int - procedure for writing an integer to the stream.
-    // Parameter std::ostream &_Ostr - address of any output stream.
-    // Parameter const int data - integer, the value of which should be written to the stream.
-    static void write_int(std::ostream &_Ostr, const int data);
-
-    // Function write_string - procedure for writing an string to the stream.
-    // Parameter std::ostream &_Ostr - address of any output stream.
-    // Parameter const string data - string, the value of which should be written to the stream.
-    static void write_string(std::ostream &_Ostr, std::string &data);
-};
-
-
 struct treap {
 public:
     // Initialization - create new treap with elements from 1 up to size.
@@ -160,56 +126,39 @@ public:
     query(int left, int right);
 };
 
-// Function get_answer - get answer to the problem.
-// Parameter treap *root - treap with condition after processing queries.
-// Return std::string - description of the treap - answer to the problem.
-std::string get_answer(treap *root);
-
 // Function solve - solve given problem.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
 // Parameter std::vector<query> &queries - list of queries,
 // that contains left and right indexes of each query.
-// Return std::string - answer to the problem.
-std::string solve(
+// Return std::vector<int> - elements after processing queries.
+std::vector<int> solve(
     const int size,
     const int queries_count,
     std::vector<query> &queries);
 
 // Function read_data - process input.
+// Parameter std::istream &_Istr - input stream.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
 // Parameter std::vector<query> &queries - list of queries,
 // that contains left and right indexes of each query.
 void read_data(
+    std::istream &_Istr,
     int &size,
     int &queries_count,
     std::vector<query> &queries);
 
+// Function write_data - process output.
+// Parameter std::ostream &_Ostr - output stream.
+// Parameter std::vector<int> &data - list of integer data to write.
+void write_data(
+    std::ostream &_Ostr,
+    std::vector<int> &data);
+
 // Main function.
 int main();
 
-void stream_manager::read_int(std::istream &_Istr, int &data) {
-    _Istr >> data;
-}
-
-void stream_manager::read_vector(
-    std::istream &_Istr,
-    std::vector<int> &vector,
-    const int size) {
-    vector.resize(size);
-    for (int i = 0; i < size; ++i) {
-        _Istr >> vector[i];
-    }
-}
-
-void stream_manager::write_int(std::ostream &_Ostr, const int data) {
-    _Ostr << data << " ";
-}
-
-void stream_manager::write_string(std::ostream &_Ostr, std::string &data) {
-    _Ostr << data << "\n";
-}
 
 treap::treap(const int size) {
     std::vector<int> values(size);
@@ -350,23 +299,13 @@ treap::node* treap::build(
     return root;
 }
 
+
 query::query() : left_position(0), right_position(0) {}
 
 query::query(int left, int right) : left_position(left), right_position(right) {}
 
-std::string get_answer(treap *root) {
-    std::vector<int> elements = root->get_elements();
-    if (elements.size() == 0) {
-        return "";
-    }
-    std::string answer = std::to_string(elements[0]);
-    for (int i = 1; i < elements.size(); ++i) {
-        answer += " " + std::to_string(elements[i]);
-    }
-    return answer;
-}
 
-std::string solve(
+std::vector<int> solve(
     const int size,
     const int queries_count,
     std::vector<query> &queries) {
@@ -376,22 +315,31 @@ std::string solve(
         root->reorder(queries[i].left_position, queries[i].right_position);
     }
 
-    return get_answer(root);
+    return root->get_elements();
 }
 
 void read_data(
+    std::istream &_Istr,
     int &size,
     int &queries_count,
     std::vector<query> &queries) {
 
-    stream_manager::read_int(std::cin, size);
-    stream_manager::read_int(std::cin, queries_count);
+    _Istr >> size;
+    _Istr >> queries_count;
 
     queries.resize(queries_count);
 
     for (int i = 0; i < queries_count; ++i) {
-        stream_manager::read_int(std::cin, queries[i].left_position);
-        stream_manager::read_int(std::cin, queries[i].right_position);
+        _Istr >> queries[i].left_position;
+        _Istr >> queries[i].right_position;
+    }
+}
+
+void write_data(
+    std::ostream &_Ostr,
+    std::vector<int> &data) {
+    for (int i = 0; i < data.size(); ++i) {
+        _Ostr << data[i] << " ";
     }
 }
 
@@ -403,11 +351,11 @@ int main() {
     int size, queries_count;
     std::vector<query> queries;
 
-    read_data(size, queries_count, queries);
+    read_data(std::cin, size, queries_count, queries);
 
-    std::string answer = solve(size, queries_count, queries);
+    std::vector<int> result = solve(size, queries_count, queries);
 
-    stream_manager::write_string(std::cout, answer);
+    write_data(std::cout, result);
 
     return 0;
 }
