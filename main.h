@@ -155,7 +155,7 @@ public:
     // Field int right_position - right index.
     int right_position;
 
-    // Empty initialization
+    // Default initialization that gives indexes value 0.
     query();
 
     // Initialization with given indexes.
