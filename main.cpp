@@ -1,27 +1,5 @@
 #include "main.h"
 
-void stream_manager::read_int(std::istream &_Istr, int &data) {
-    _Istr >> data;
-}
-
-void stream_manager::read_vector(
-    std::istream &_Istr,
-    std::vector<int> &vector,
-    const int size) {
-    vector.resize(size);
-    for (int i = 0; i < size; ++i) {
-        _Istr >> vector[i];
-    }
-}
-
-void stream_manager::write_int(std::ostream &_Ostr, const int data) {
-    _Ostr << data << " ";
-}
-
-void stream_manager::write_string(std::ostream &_Ostr, std::string &data) {
-    _Ostr << data << "\n";
-}
-
 treap::treap(const int size) {
     std::vector<int> values(size);
     for (int i = 0; i < size; ++i) {
@@ -161,23 +139,13 @@ treap::node* treap::build(
     return root;
 }
 
+
 query::query() : left_position(0), right_position(0) {}
 
 query::query(int left, int right) : left_position(left), right_position(right) {}
 
-std::string get_answer(treap *root) {
-    std::vector<int> elements = root->get_elements();
-    if (elements.size() == 0) {
-        return "";
-    }
-    std::string answer = std::to_string(elements[0]);
-    for (int i = 1; i < elements.size(); ++i) {
-        answer += " " + std::to_string(elements[i]);
-    }
-    return answer;
-}
 
-std::string solve(
+std::vector<int> solve(
     const int size,
     const int queries_count,
     std::vector<query> &queries) {
@@ -187,22 +155,31 @@ std::string solve(
         root->reorder(queries[i].left_position, queries[i].right_position);
     }
 
-    return get_answer(root);
+    return root->get_elements();
 }
 
 void read_data(
+    std::istream &_Istr,
     int &size,
     int &queries_count,
     std::vector<query> &queries) {
 
-    stream_manager::read_int(std::cin, size);
-    stream_manager::read_int(std::cin, queries_count);
+    _Istr >> size;
+    _Istr >> queries_count;
 
     queries.resize(queries_count);
 
     for (int i = 0; i < queries_count; ++i) {
-        stream_manager::read_int(std::cin, queries[i].left_position);
-        stream_manager::read_int(std::cin, queries[i].right_position);
+        _Istr >> queries[i].left_position;
+        _Istr >> queries[i].right_position;
+    }
+}
+
+void write_data(
+    std::ostream &_Ostr,
+    std::vector<int> &data) {
+    for (int i = 0; i < data.size(); ++i) {
+        _Ostr << data[i] << " ";
     }
 }
 
@@ -214,11 +191,11 @@ int main() {
     int size, queries_count;
     std::vector<query> queries;
 
-    read_data(size, queries_count, queries);
+    read_data(std::cin, size, queries_count, queries);
 
-    std::string answer = solve(size, queries_count, queries);
+    std::vector<int> result = solve(size, queries_count, queries);
 
-    stream_manager::write_string(std::cout, answer);
+    write_data(std::cout, result);
 
     return 0;
 }
