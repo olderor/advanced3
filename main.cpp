@@ -116,7 +116,6 @@ treap::node* treap::reorder(node *root, const int left, const int right) {
     node *between_left_and_right, *after_right;
     split(after_left, between_left_and_right, after_right, right - left + 1);
 
-
     node *temp, *result;
     merge(between_left_and_right, before_left, temp);
     merge(temp, after_right, result);
@@ -128,6 +127,7 @@ treap::node* treap::build(
     const int left,
     const int right,
     std::vector<int> &values) {
+
     const int index = (left + right + 1) / 2;
     if (index > values.size() || index <= 0 || left > right) {
         return nullptr;
@@ -149,6 +149,7 @@ std::vector<int> solve(
     const int size,
     const int queries_count,
     std::vector<query> &queries) {
+
     treap *root = new treap(size);
 
     for (int i = 0; i < queries_count; ++i) {
@@ -178,6 +179,7 @@ void read_data(
 void write_data(
     std::ostream &_Ostr,
     std::vector<int> &data) {
+
     for (int i = 0; i < data.size(); ++i) {
         _Ostr << data[i] << " ";
     }
