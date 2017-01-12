@@ -6,40 +6,6 @@
 #include <string>
 #include <utility>
 
-// Stream manager structure.
-// Use for reading/writing different data from/to the stream.
-// It makes processing input and output easier.
-struct stream_manager {
-
-    // Function read_int - procedure for reading an integer from the stream.
-    // Parameter std::istream &_Istr - address of any input stream.
-    // Parameter int &data - address of the integer, where should be stored input data.
-    static void read_int(std::istream &_Istr, int &data);
-
-    // Function read_vector - procedure for reading an vector of the size from the stream.
-    // Before reading the data, vector is going to be cleaned.
-    // So do not forget, that all the data stored in this vector will be lost.
-    // Parameter std::istream &_Istr - address of any input stream.
-    // Parameter std::vector<int> &vector - vector, where should be stored input data.
-    // Parameter const int size - number of times to read integers from the stream.
-    // Also it is the new size of the vector.
-    static void read_vector(
-        std::istream &_Istr,
-        std::vector<int> &vector,
-        const int size);
-
-    // Function write_int - procedure for writing an integer to the stream.
-    // Parameter std::ostream &_Ostr - address of any output stream.
-    // Parameter const int data - integer, the value of which should be written to the stream.
-    static void write_int(std::ostream &_Ostr, const int data);
-
-    // Function write_string - procedure for writing an string to the stream.
-    // Parameter std::ostream &_Ostr - address of any output stream.
-    // Parameter const string data - string, the value of which should be written to the stream.
-    static void write_string(std::ostream &_Ostr, std::string &data);
-};
-
-
 struct treap {
 public:
     // Initialization - create new treap with elements from 1 up to size.
@@ -162,31 +128,35 @@ public:
     query(int left, int right);
 };
 
-// Function get_answer - get answer to the problem.
-// Parameter treap *root - treap with condition after processing queries.
-// Return std::string - description of the treap - answer to the problem.
-std::string get_answer(treap *root);
-
 // Function solve - solve given problem.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
 // Parameter std::vector<query> &queries - list of queries,
 // that contains left and right indexes of each query.
-// Return std::string - answer to the problem.
-std::string solve(
+// Return std::vector<int> - elements after processing queries.
+std::vector<int> solve(
     const int size,
     const int queries_count,
     std::vector<query> &queries);
 
 // Function read_data - process input.
+// Parameter std::istream &_Istr - input stream.
 // Parameter const int size - number of elements in the array.
 // Parameter const int queries_count - number of queries.
 // Parameter std::vector<query> &queries - list of queries,
 // that contains left and right indexes of each query.
 void read_data(
+    std::istream &_Istr,
     int &size,
     int &queries_count,
     std::vector<query> &queries);
+
+// Function write_data - process output.
+// Parameter std::ostream &_Ostr - output stream.
+// Parameter std::vector<int> &data - list of integer data to write.
+void write_data(
+    std::ostream &_Ostr,
+    std::vector<int> &data);
 
 // Main function.
 int main();
