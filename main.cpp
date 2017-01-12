@@ -38,7 +38,7 @@ void treap::reorder(const int left, const int right) {
     root = reorder(root, left, right);
 }
 
-std::string treap::get_description(std::string separator = " ") {
+std::string treap::get_description(std::string separator) {
     // return get_description(root);
 
     std::vector<int> elements = get_elements();
