@@ -302,7 +302,9 @@ treap::node* treap::build(
 
 query::query() : left_position(0), right_position(0) {}
 
-query::query(int left, int right) : left_position(left), right_position(right) {}
+query::query(const int left, const int right) 
+    : left_position(left), 
+      right_position(right) {}
 
 
 std::vector<int> solve(
