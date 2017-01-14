@@ -16,7 +16,7 @@ void treap::reorder(const int left, const int right) {
     root = reorder(root, left, right);
 }
 
-std::string treap::get_description(std::string separator) {
+std::string treap::get_description(const std::string separator) {
     // return get_description(root);
 
     std::vector<int> elements = get_elements();
@@ -31,7 +31,7 @@ std::string treap::get_description(std::string separator) {
 }
 
 treap::node::node() {}
-treap::node::node(int value) : value(value) {}
+treap::node::node(const int value) : value(value) {}
 
 int treap::size(node *root) {
     return root ? root->size : 0;
@@ -142,7 +142,9 @@ treap::node* treap::build(
 
 query::query() : left_position(0), right_position(0) {}
 
-query::query(int left, int right) : left_position(left), right_position(right) {}
+query::query(const int left, const int right) 
+    : left_position(left), 
+      right_position(right) {}
 
 
 std::vector<int> solve(
