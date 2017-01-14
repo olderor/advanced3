@@ -28,7 +28,7 @@ public:
     // Function get_description - get description of the treap - print array.
     // Parameter std::string separator - elements in the treap will be separeted by this string.
     // Return std::string - description of the array.
-    std::string get_description(std::string separator = " ");
+    std::string get_description(const std::string separator = " ");
 
 private:
     // Implicit treap node structure.
@@ -49,7 +49,7 @@ private:
         node();
 
         // Initialization with given value.
-        explicit node(int value);
+        explicit node(const int value);
     };
 
     // Pointer to the root element in the tree.
@@ -125,7 +125,7 @@ public:
     query();
 
     // Initialization with given indexes.
-    query(int left, int right);
+    query(const int left, const int right);
 };
 
 // Function solve - solve given problem.
