@@ -37,7 +37,7 @@ private:
         int size;
 
         // Field value - value that the node stores.
-        int value;
+        const int value;
 
         // Pointer to the left child.
         node *left = nullptr;
