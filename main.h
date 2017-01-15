@@ -159,4 +159,4 @@ void write_data(
     std::vector<int> &data);
 
 // Main function.
-int main();
+const int main();
