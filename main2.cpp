@@ -157,7 +157,7 @@ void write_data(
     std::vector<int> &data);
 
 // Main function.
-const int main();
+int main();
 
 
 treap::treap(const int size) {
@@ -348,7 +348,7 @@ void write_data(
     }
 }
 
-const int main() {
+int main() {
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
