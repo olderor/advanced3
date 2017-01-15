@@ -30,7 +30,7 @@ std::string treap::get_description(const std::string separator) {
     return description;
 }
 
-treap::node::node() {}
+treap::node::node() : value(0) {}
 treap::node::node(const int value) : value(value) {}
 
 int treap::size(node *root) {
@@ -142,9 +142,10 @@ treap::node* treap::build(
 
 query::query() : left_position(0), right_position(0) {}
 
-query::query(const int left, const int right) 
-    : left_position(left), 
-      right_position(right) {}
+query::query(const int left, const int right)
+    : left_position(left),
+    right_position(right) {
+}
 
 
 std::vector<int> solve(
