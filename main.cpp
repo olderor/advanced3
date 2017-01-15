@@ -181,14 +181,14 @@ void read_data(
 
 void write_data(
     std::ostream &_Ostr,
-    std::vector<int> &data) {
+    const std::vector<int> &data) {
 
     for (int i = 0; i < data.size(); ++i) {
         _Ostr << data[i] << " ";
     }
 }
 
-int main() {
+const int main() {
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
@@ -198,7 +198,7 @@ int main() {
 
     read_data(std::cin, size, queries_count, queries);
 
-    std::vector<int> result = solve(size, queries_count, queries);
+    const std::vector<int> result = solve(size, queries_count, queries);
 
     write_data(std::cout, result);
 
